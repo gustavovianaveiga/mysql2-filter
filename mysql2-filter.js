@@ -1,4 +1,4 @@
-export default function filter(conn, query, filter) {
+export default function filter(conn, query, otherQuery, filter) {
   if (!conn || !query || !filter) throw Error("Missing parameters");
   function removerValoresNulos(objeto) {
     for (let chave in objeto) {
@@ -27,12 +27,11 @@ export default function filter(conn, query, filter) {
     }
   }
   return new Promise((resolve, reject) => {
-    conn.query(query + filters, (err, data) => {
+    conn.query(`${query} ${filters} ${otherQuery}`, (err, data) => {
       if (err) {
         console.error(err);
         reject(err);
       }
-      console.log(query + filters);
       resolve(data);
     });
   });
